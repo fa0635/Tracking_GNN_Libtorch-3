@@ -16,7 +16,7 @@ GraphSample AddNewEdges(const std::vector<PreProcessing::Hit>& hits,
     auto tracks = PostProcessing::GetTracks(graph, -1);
 
     std::vector<std::set<int>> row_outer_hits(params.num_rows), row_inner_hits(params.num_rows);
-    for (int track_id = 0; track_id < tracks.size(); ++track_id)
+    for (size_t track_id = 0; track_id < tracks.size(); ++track_id)
     {
         std::map<int, std::set<int>> row_hit_ids;
         for (int i : tracks[track_id])
@@ -39,9 +39,9 @@ GraphSample AddNewEdges(const std::vector<PreProcessing::Hit>& hits,
 
     std::vector<torch::Tensor> new_edge_indices, new_edge_features, new_edge_labels;
 
-    for (int outer_row_id = 1; outer_row_id < params.num_rows - 3; ++outer_row_id)
+    for (size_t outer_row_id = 1; outer_row_id < params.num_rows - 3; ++outer_row_id)
     {
-        for (int inner_row_id = outer_row_id + 2; inner_row_id < params.num_rows - 1; ++inner_row_id)
+        for (size_t inner_row_id = outer_row_id + 2; inner_row_id < params.num_rows - 1; ++inner_row_id)
         {
             for (auto outer_hit_id : row_outer_hits[outer_row_id])
             {
@@ -65,7 +65,7 @@ GraphSample AddNewEdges(const std::vector<PreProcessing::Hit>& hits,
                         auto node_pos_1_a = node_pos_1_tensor.accessor<float, 1>();
                         auto node_pos_2_a = node_pos_2_tensor.accessor<float, 1>();
                         std::vector<float> node_pos_1_vector(params.node_attr_size), node_pos_2_vector(params.node_attr_size);
-                        for (int k = 0; k < params.node_attr_size; ++k)
+                        for (size_t k = 0; k < params.node_attr_size; ++k)
                         {
                             node_pos_1_vector[k] = node_pos_1_a[k];
                             node_pos_2_vector[k] = node_pos_2_a[k];
@@ -89,7 +89,7 @@ GraphSample AddNewEdges(const std::vector<PreProcessing::Hit>& hits,
     torch::Tensor new_edge_index = torch::stack(new_edge_indices, 0).transpose(0, 1);
     torch::Tensor new_edge_attr = torch::stack(new_edge_features, 0);
 
-    int new_edge_start = graph.edge_attr.size(0);
+    torch::Tensor new_edge_start = torch::tensor({{graph.edge_attr.size(0)}}, torch::TensorOptions().dtype(torch::kInt32));
 
     graph.edge_index = torch::cat({graph.edge_index, new_edge_index}, 1);
     graph.edge_attr = torch::cat({graph.edge_attr, new_edge_attr}, 0);

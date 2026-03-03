@@ -31,8 +31,9 @@ std::vector<GraphSample> load_graph_samples(const std::vector<std::string>& file
             auto node_hit_id = module.attr("node_hit_id").toTensor();
             auto edge_attr = module.attr("edge_attr").toTensor();
             auto answer = module.attr("answer").toTensor();
+            auto new_edge_start = module.attr("new_edge_start").toTensor();
 
-            samples.emplace_back(edge_index, node_attr, node_hit_id, edge_attr, answer);
+            samples.emplace_back(edge_index, node_attr, node_hit_id, edge_attr, answer, new_edge_start);
         }
         else
         {
@@ -200,14 +201,13 @@ int main(int argc, char* argv[])
         {
             //batch = batch.to(torch::kCUDA);
 
-            auto edge_index   = batch.edge_index;
-            auto node_attr    = batch.node_attr;
-            auto edge_attr    = batch.edge_attr;
-            auto answer_true  = batch.answer;
-            auto node_hit_id  = batch.node_hit_id.squeeze();
+            auto edge_index            = batch.edge_index;
+            auto node_attr             = batch.node_attr;
+            auto edge_attr             = batch.edge_attr;
+            auto answer_true           = batch.answer;
+            auto new_edge_start_tensor = batch.new_edge_start;
 
-            auto node_hit_id_a = node_hit_id.accessor<int, 1>();
-            int new_edge_start = node_hit_id_a[-1];
+            int new_edge_start = new_edge_start_tensor.item<int>();
 
             auto answer_pred = model->forward(edge_index, node_attr, edge_attr, new_edge_start);
 
@@ -238,14 +238,13 @@ int main(int argc, char* argv[])
         {
             //batch = batch.to(torch::kCUDA);
 
-            auto edge_index   = batch.edge_index;
-            auto node_attr    = batch.node_attr;
-            auto edge_attr    = batch.edge_attr;
-            auto answer_true  = batch.answer;
-            auto node_hit_id  = batch.node_hit_id.squeeze();
+            auto edge_index            = batch.edge_index;
+            auto node_attr             = batch.node_attr;
+            auto edge_attr             = batch.edge_attr;
+            auto answer_true           = batch.answer;
+            auto new_edge_start_tensor = batch.new_edge_start;
 
-            auto node_hit_id_a = node_hit_id.accessor<int, 1>();
-            int new_edge_start = node_hit_id_a[-1];
+            int new_edge_start = new_edge_start_tensor.item<int>();
 
             auto answer_pred = model->forward(edge_index, node_attr, edge_attr, new_edge_start);
 

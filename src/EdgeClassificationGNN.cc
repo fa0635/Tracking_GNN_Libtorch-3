@@ -77,7 +77,7 @@ torch::Tensor EdgeClassificationGNNImpl::forward(torch::Tensor edge_index, torch
                                         edge_attr}, 1);
 
     torch::Tensor edge_labels;
-    if (new_edge_start == -1)
+    if (new_edge_start == 0)
     {
         edge_labels = initial_edge_classification_mlp->forward(complex_features);
     }
@@ -109,7 +109,7 @@ torch::Tensor EdgeClassificationGNNImpl::forward(torch::Tensor edge_index, torch
                                        initial_node_attr.index_select(0, col),
                                        edge_attr}, 1);
 
-        if (new_edge_start == -1)
+        if (new_edge_start == 0)
         {
             edge_labels = edge_classification_mlp->forward(complex_features);
         }

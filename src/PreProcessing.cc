@@ -295,6 +295,7 @@ void PreProcessing::SaveGraphSample(const GraphSample& sample, const std::string
     module.register_buffer("node_hit_id", sample.node_hit_id);
     module.register_buffer("edge_attr", sample.edge_attr);
     module.register_buffer("answer", sample.answer);
+    module.register_buffer("new_edge_start", sample.new_edge_start);
     
     module.save(filename);
 }

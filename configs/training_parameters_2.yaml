@@ -1,6 +1,6 @@
-train_graph_dir:  ../train_graphs_3/
+train_graph_dir:  ../train_graphs_2/
 saved_model_file: ../model_save_2/model_checkpoint.pth
-num_epochs:       120
+num_epochs:       10
 batch_size:       1
 test_size:        0.2
 learning_rate:    0.001
@@ -9,7 +9,7 @@ section_num:      1
 node_attr_size:   3
 edge_attr_size:   4
 pos_weight:       1.0
-neg_weight:       0.7
+neg_weight:       0.198
 step_size:        20
 gamma:            0.9
 threshold:        0.5

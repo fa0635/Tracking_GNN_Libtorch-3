@@ -17,7 +17,7 @@ public:
                               const std::vector<int>& edge_mlp_hidden_sizes = std::vector<int>{64, 64},
                               const std::vector<int>& edge_classifier_hidden_sizes = std::vector<int>{64, 64});
     ~EdgeClassificationGNNImpl() override = default;
-    torch::Tensor forward(torch::Tensor edge_index, torch::Tensor node_attr, torch::Tensor edge_attr, int new_edge_start = -1);
+    torch::Tensor forward(torch::Tensor edge_index, torch::Tensor node_attr, torch::Tensor edge_attr, int new_edge_start = 0);
     void load_model(const std::string& file_name);
 
 private:
