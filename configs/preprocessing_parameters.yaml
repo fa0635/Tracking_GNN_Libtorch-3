@@ -1,6 +1,6 @@
 input_dir: ../MPD_dataset/MPD_events/
 output_dir: ../train_graphs/
-dataset_size: 10
+dataset_size: 1000
 
 selection:
     dphi_max: 0.06

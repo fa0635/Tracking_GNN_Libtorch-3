@@ -233,9 +233,9 @@ int main(int argc, char* argv[])
     std::cout << "Starting processing of " << (params.dataset_size * params.n_phi_sections * params.n_eta_sections) << " files...\n";
 
     std::vector<std::string> test_file_paths;
-    for (int evtid = 0; evtid < params.dataset_size; ++evtid)
+    for (size_t evtid = 0; evtid < params.dataset_size; ++evtid)
     {
-        for (int section_id = 0; section_id < params.n_phi_sections * params.n_eta_sections; ++section_id)
+        for (size_t section_id = 0; section_id < params.n_phi_sections * params.n_eta_sections; ++section_id)
         {
             std::ostringstream oss;
             oss << params.output_dir
@@ -248,9 +248,9 @@ int main(int argc, char* argv[])
     }
 
     std::vector<std::string> output_file_paths;
-    for (int evtid = 0; evtid < params.dataset_size; ++evtid)
+    for (size_t evtid = 0; evtid < params.dataset_size; ++evtid)
     {
-        for (int section_id = 0; section_id < params.n_phi_sections * params.n_eta_sections; ++section_id)
+        for (size_t section_id = 0; section_id < params.n_phi_sections * params.n_eta_sections; ++section_id)
         {
             std::ostringstream oss;
             oss << params.graph_dir_2
@@ -303,7 +303,7 @@ int main(int argc, char* argv[])
         graph.answer = answer;
     }
 
-    for (int evtid = 0; evtid < params.dataset_size; ++evtid)
+    for (size_t evtid = 0; evtid < params.dataset_size; ++evtid)
     {
         try
         {
@@ -315,7 +315,7 @@ int main(int argc, char* argv[])
 
             SelectHitsForTrainingFromCSV(hit_file_name, track_file_name, truth_file_name, hits);
 
-            for (int section_id = 0; section_id < params.n_phi_sections * params.n_eta_sections; ++section_id)
+            for (size_t section_id = 0; section_id < params.n_phi_sections * params.n_eta_sections; ++section_id)
             {
                 auto& graph = test_data[evtid * params.n_phi_sections * params.n_eta_sections + section_id];
 
