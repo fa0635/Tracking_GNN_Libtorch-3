@@ -37,7 +37,28 @@ namespace PreProcessing
         size_t node_attr_size;
         size_t edge_attr_size;
         float threshold;
-        float d_max_2;
+
+        float dist_0;
+        float dphi_0;
+        float dz_0;
+        float dr_0;
+        float z0_0;
+        float chi_0;
+        float deta_0;
+        float rho_0;
+        float r_dist_0;
+        float dist_drow_0;
+
+        float dist_1;
+        float dphi_1;
+        float dz_1;
+        float dr_1;
+        float z0_1;
+        float chi_1;
+        float deta_1;
+        float rho_1;
+        float r_dist_1;
+        float dist_drow_1;
     };
 
     struct Hit 

@@ -6,6 +6,8 @@
 #include "PostProcessing.hh"
 #include "PreProcessing.hh"
 
+int calc_sector_dist(const int& x, const int& y);
+
 GraphSample AddNewEdges(const std::vector<PreProcessing::Hit>& hits,
                         const PreProcessing::PreprocessingParams& params,
                         GraphSample graph,
