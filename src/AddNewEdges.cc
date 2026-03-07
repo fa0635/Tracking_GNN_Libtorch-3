@@ -1,5 +1,10 @@
 #include "AddNewEdges.hh"
 
+int calc_sector_dist(const int& x, const int& y)
+{
+    return std::min(std::abs((x % 12) - (y % 12)), 12 - std::abs((x % 12) - (y % 12)));
+}
+
 GraphSample AddNewEdges(const std::vector<PreProcessing::Hit>& hits,
                         const PreProcessing::PreprocessingParams& params,
                         GraphSample graph,
@@ -47,14 +52,54 @@ GraphSample AddNewEdges(const std::vector<PreProcessing::Hit>& hits,
             {
                 for (auto inner_hit_id : row_inner_hits[inner_row_id])
                 {
-                    float dphi = PreProcessing::CalcDphi(hits[outer_hit_id - 1].phi,
-                                                         hits[inner_hit_id - 1].phi);
+                    float dphi = PreProcessing::CalcDphi(hits[outer_hit_id - 1].phi, hits[inner_hit_id - 1].phi);
                     float dz = hits[inner_hit_id - 1].z - hits[outer_hit_id - 1].z;
                     float distance = std::sqrt(hits[outer_hit_id - 1].r *
                     hits[outer_hit_id - 1].r + hits[inner_hit_id - 1].r *
                     hits[inner_hit_id - 1].r - 2 * hits[outer_hit_id - 1].r *
                     hits[inner_hit_id - 1].r * std::cos(dphi) + dz * dz);
-                    if (distance < params.d_max_2)
+
+                    float dr = hits[inner_hit_id - 1].r - hits[outer_hit_id - 1].r;
+
+                    float z0 = hits[outer_hit_id - 1].z - hits[outer_hit_id - 1].r * dz / dr;
+
+                    float chi = std::atan(dz / dr);
+
+                    float deta = PreProcessing::CalcEta(hits[inner_hit_id - 1].r, hits[inner_hit_id - 1].z) -
+                                 PreProcessing::CalcEta(hits[outer_hit_id - 1].r, hits[outer_hit_id - 1].z);
+
+                    float rho = std::sqrt(deta * deta + dphi * dphi);
+
+                    int r_dist = inner_row_id - outer_row_id;
+
+                    float dist_drow = distance / r_dist;
+
+                    int outer_sector = hits[outer_hit_id - 1].sector_id;
+                    int inner_sector = hits[inner_hit_id - 1].sector_id;
+                    int sector_dist = calc_sector_dist(outer_sector, inner_sector);
+
+                    if ((sector_dist == 0 &&
+                         distance <= params.dist_0 &&
+                         std::abs(dphi) <= params.dphi_0 &&
+                         std::abs(dz) <= params.dz_0 &&
+                         dr <= params.dr_0 &&
+                         std::abs(z0) <= params.z0_0 &&
+                         std::abs(chi) <= params.chi_0 &&
+                         std::abs(deta) <= params.deta_0 &&
+                         rho <= params.rho_0 &&
+                         r_dist <= params.r_dist_0 &&
+                         dist_drow <= params.dist_drow_0) ||
+                        (sector_dist == 1 &&
+                         distance <= params.dist_1 &&
+                         std::abs(dphi) <= params.dphi_1 &&
+                         std::abs(dz) <= params.dz_1 &&
+                         dr <= params.dr_1 &&
+                         std::abs(z0) <= params.z0_1 &&
+                         std::abs(chi) <= params.chi_1 &&
+                         std::abs(deta) <= params.deta_1 &&
+                         rho <= params.rho_1 &&
+                         r_dist <= params.r_dist_1 &&
+                         dist_drow <= params.dist_drow_1))
                     {
                         new_edge_indices.push_back(torch::tensor({hit_index_lookup[outer_hit_id],
                             hit_index_lookup[inner_hit_id]},

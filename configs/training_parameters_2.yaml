@@ -9,7 +9,7 @@ section_num:      1
 node_attr_size:   3
 edge_attr_size:   4
 pos_weight:       1.0
-neg_weight:       0.198
+neg_weight:       0.8
 step_size:        20
 gamma:            0.9
 threshold:        0.5

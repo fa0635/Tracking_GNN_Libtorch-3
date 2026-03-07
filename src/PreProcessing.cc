@@ -37,7 +37,28 @@ PreProcessing::PreprocessingParams PreProcessing::LoadConfig(const std::string& 
     params.node_attr_size = config["node_attr_size"].as<size_t>();
     params.edge_attr_size = config["edge_attr_size"].as<size_t>();
     params.threshold = config["threshold"].as<float>();
-    params.d_max_2 = config["d_max_2"].as<float>();
+
+    params.dist_0 = config["dist_0"].as<float>();
+    params.dphi_0 = config["dphi_0"].as<float>();
+    params.dz_0 = config["dz_0"].as<float>();
+    params.dr_0 = config["dr_0"].as<float>();
+    params.z0_0 = config["z0_0"].as<float>();
+    params.chi_0 = config["chi_0"].as<float>();
+    params.deta_0 = config["deta_0"].as<float>();
+    params.rho_0 = config["rho_0"].as<float>();
+    params.r_dist_0 = config["r_dist_0"].as<float>();
+    params.dist_drow_0 = config["dist_drow_0"].as<float>();
+
+    params.dist_1 = config["dist_1"].as<float>();
+    params.dphi_1 = config["dphi_1"].as<float>();
+    params.dz_1 = config["dz_1"].as<float>();
+    params.dr_1 = config["dr_1"].as<float>();
+    params.z0_1 = config["z0_1"].as<float>();
+    params.chi_1 = config["chi_1"].as<float>();
+    params.deta_1 = config["deta_1"].as<float>();
+    params.rho_1 = config["rho_1"].as<float>();
+    params.r_dist_1 = config["r_dist_1"].as<float>();
+    params.dist_drow_1 = config["dist_drow_1"].as<float>();
 
     return params;
 }
